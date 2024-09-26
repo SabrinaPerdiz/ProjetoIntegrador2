@@ -1,0 +1,25 @@
+
+
+.container_slideshow {
+    padding: 20px 50px 150px 100px;
+    display: flex;
+    border-radius: 5px;
+    box-shadow: 1px 1px 0px rgba(39, 38, 38, 0.356);
+}
+
+
+
+article.sobre {
+    background-color: #FFFAEA;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    padding: 20px;
+    margin-right: 70px;
+    box-shadow: 1px 1px 0px rgba(39, 38, 38, 0.356);
+    border-radius: 5px;
+    justify-content: right;
+  }
+
+article.sobre p {
+    line-height: 1.9;
+  }

@@ -1,0 +1,28 @@
+div > a {
+    text-decoration: none;
+    padding-right: 90px;
+    font-size: 1.1em;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+span {
+    color: black;
+    cursor: default;
+}
+
+i {
+    font-size: 4.0em !important;
+    color: black;
+    padding-bottom: 100px;
+    padding-top: 70px;
+    padding-left: 150px;
+    padding-right: 5px;
+    transition: transform 0.3s ease-in-out;
+}
+
+i:hover{
+    transform: scale(1.1);
+}
+
+
+
