@@ -1,0 +1,39 @@
+{% extends "/adm/layout_adm.html" %}
+
+{% block head %}
+<title>Dashboard</title>
+<link rel="stylesheet" href="/static/css/layout.css">
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<main>
+    <div>
+        <a href="cadastro_cliente">
+            <i class="material-icons">person_add</i>
+            <span>Cadastro de Clientes</span>
+        </a>
+        <a href="cadastro_serviços">
+            <i class="material-icons">create_new_folder</i>
+            <span>Cadastro de Serviços</span>
+        </a>
+        <a href="cadastro_funcionarios">
+            <i class="material-icons">group_add</i>
+            <span>Cadastro de Funcionarios</span>
+        </a>
+        <a href="clientes_cadastrados">
+            <i class="material-icons">contact_page</i>
+            <span>Clientes Cadastrados</span>
+        </a>
+        <a href="serviços_cadastrados">
+            <i class="material-icons">folder_open</i>
+            <span>Serviços Cadastrados</span>
+        </a>
+        <a href="funcionarios_cadastrados">
+            <i class="material-icons">badge</i>
+            <span>Funcionarios Cadastrados</span>
+        </a>
+    </div>
+</main>
+{% endblock %}

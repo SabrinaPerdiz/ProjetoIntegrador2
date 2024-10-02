@@ -1,0 +1,57 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+.button-confirm {
+    width: 370px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: black;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+
+}
+.button-confirm:hover {
+    background-color: black;
+}
+.button-confirm:active {
+    background-color: black;
+    color: white;
+}
+.card {
+
+    height: 80%;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.input-group {
+    margin-bottom: 40px;
+    margin-top: 40px;
+    outline-color: black;
+}
+.form-control {
+    width: 350px;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.form-control:focus {
+    outline: none;
+    font-size: 1.1em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.ico_pessoa {
+    padding-left: 150px;
+}
+
