@@ -75,9 +75,11 @@ def cadastro_cliente():
     if request.method == 'POST':
         nome = request.form['nome']
         telefone = request.form['telefone']
-        data_nascimento = request.form['data_nascimento'] if request.form['data_nascimento'] != '' else "null"
+        data_nascimento = '"'+request.form['data_nascimento']+'"' if request.form['data_nascimento'] != '' else "null"
+        facebook = '"'+request.form['facebook']+'"' if request.form['facebook'] != '' else "null"
+        instagram = '"'+request.form['instagram']+'"' if request.form['instagram'] != '' else "null"
         endereco = '"'+request.form['endereco']+'"' if request.form['endereco'] != '' else "null"
-        retorno = db.cliente.insert_cliente(nome,telefone,data_nascimento,endereco)
+        retorno = db.cliente.insert_cliente(nome,telefone,data_nascimento,endereco,facebook,instagram)
         if retorno != None:
             flash("Cliente cadastrado com sucesso!")
     return render_template("/adm/jinja_cadastro_cliente.html")
