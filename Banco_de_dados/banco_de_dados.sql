@@ -16,6 +16,10 @@ CREATE TABLE usuarios (
   senha VARCHAR(45) NULL
 );
 
+CREATE TABLE Procedimentos (
+	id_procedimento INT AUTO_INCREMENT PRIMARY KEY
+);
+
 -- Tabela Agendamentos
 CREATE TABLE Agendamentos (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
@@ -25,11 +29,9 @@ CREATE TABLE Agendamentos (
     hora_agendamento TIME,
     data_realizacao DATE,
     tipo_servico ENUM('montagem', 'reforma', 'instalações'),
-    descricao_servico,
+    descricao_servico TEXT,
     status ENUM('pendente', 'confirmado', 'realizado', 'cancelado'),
     observacoes TEXT,
     FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
     FOREIGN KEY (id_procedimento) REFERENCES Procedimentos(id_procedimento)
 );
-
-
