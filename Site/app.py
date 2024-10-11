@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user, logout_user
+from dotenv import load_dotenv
+import importlib
+import os
 import db
 
 
@@ -10,6 +13,18 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 db.getdb()
+
+# Carregar variáveis do arquivo .env_local
+load_dotenv(dotenv_path='.env_local')
+
+def load_strings(module_access,module_name):
+    if module_access == '':
+        module = importlib.import_module(f"static.strings.{module_name}_strings")
+    else:
+        module = importlib.import_module(f"static.strings.{module_access}.{module_name}_strings")
+    return module.STRINGS
+
+errors = load_strings('','errors')
 
 class User(UserMixin):
 
@@ -38,16 +53,19 @@ def load_user(user_id):
 #Tela inicial
 @app.route("/")
 def homepage():
-    return render_template("jinja_home.html")
+    strings = load_strings('landpage','home')
+    phone_number = os.getenv('PHONE_NUMBER')
+    return render_template("/landpage/jinja_home.html", strings=strings, phone_number=phone_number)
 
-#Tela de agendamento
+#Lista de agendamentos
 @app.route("/agendamento")
 def agendamento():
-    return render_template("jinja_agendamento.html")
+    return render_template("/landpage/jinja_agendamento.html")
 
 #Tela de login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    strings = load_strings('landpage','login')
     if current_user.is_authenticated:
          return redirect(url_for('dashboard'))
     else:
@@ -60,7 +78,12 @@ def login():
                 if user.password == password:
                     login_user(user)
                     return redirect(url_for('dashboard'))
-        return render_template('jinja_login.html')
+            else:
+                error_message = errors['user_not_found']
+                flash(error_message)
+                return redirect(url_for('login'))
+        
+        return render_template('/landpage/jinja_login.html', strings=strings)
 
 #Tela principal do administrador
 @app.route("/dashboard")
@@ -82,7 +105,7 @@ def cadastro_cliente():
         retorno = db.cliente.insert_cliente(nome,telefone,data_nascimento,endereco,facebook,instagram)
         if retorno != None:
             flash("Cliente cadastrado com sucesso!")
-    return render_template("/adm/jinja_cadastro_cliente.html")
+    return render_template("/adm/jinja_clientes_cadastrados.html")
 
 #Tela Clientes Cadastrados
 @app.route("/clientes_cadastrados")

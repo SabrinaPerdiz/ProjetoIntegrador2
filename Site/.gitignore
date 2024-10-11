@@ -2,3 +2,4 @@ __pycache__
 *.pyc
 db_connection_data.py
 poetry.lock
+.env_local
