@@ -55,26 +55,26 @@ class cliente():
     def get_clientes():
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('select * from clientes')
+        cursor.execute('SELECT * FROM clientes;')
         clientes = cursor.fetchall()    
-        print(clientes)
+        #print(clientes)
         cursor.close()
         return clientes
     
     #Insere um cliente novo na tabela
-    def insert_cliente(nome,telefone,data_nascimento,endereco,facebook,instagram):
+    def insert_cliente(nome,telefone,endereco,cpf,email,tipoServico,agenda):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        print('insert into clientes (nome,telefone,data_nascimento,endereco,facebook,instagram) values ("'+nome+'","'+telefone+'",'+data_nascimento+','+endereco+','+facebook+','+instagram+')')
-        cursor.execute('insert into clientes (nome,telefone,data_nascimento,endereco,facebook,instagram) values ("'+nome+'","'+telefone+'",'+data_nascimento+','+endereco+','+facebook+','+instagram+')')
+        #print('insert into clientes (nome,telefone,endereco,cpf,email,tipoServico,agenda) values ("'+nome+'","'+telefone+'",'+endereco+','+cpf+','+email+','+tipoServico+','+agenda+')')
+        cursor.execute(f"INSERT INTO clientes VALUES (default, '{nome}','{telefone}','{endereco}','{cpf}','{email}','{tipoServico}','{agenda}')")
         db.commit()  
         cursor.close()
         return 1
     
-    def update_cliente(id,nome,telefone,data_nascimento,endereco,facebook,instagram):
+    def update_cliente(id,nome,telefone,endereco,cpf,email,tipoServico,agenda):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('update clientes set (nome,telefone,data_nascimento,endereco,facebook,instagram) values ('+nome+','+telefone+','+data_nascimento+','+endereco+','+facebook+','+instagram+') where id_cliente='+id)
+        cursor.execute('update clientes set (nome,telefone,endereco,cpf,email,tipoServico,agenda) values ('+nome+','+telefone+','+endereco+','+cpf+','+email+','+tipoServico+','+agenda+') where id_cliente='+id)
         db.commit()  
         affected_rows = cursor.rowcount
         if affected_rows is not None and affected_rows > 0:
@@ -82,6 +82,26 @@ class cliente():
             return True
         else:
             return False
+
+    def pesquisa_cpf(cpf):
+        db =getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute(f"SELECT * FROM clientes WHERE cpf='{cpf}'")
+        resultado = cursor.fetchall()
+        print(resultado)
+        db.commit()  
+        cursor.close()
+        return resultado
+
+
+
+    def exclui_clientes(cpf):
+        db =getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute(f"DELETE FROM clientes WHERE cpf='{cpf}'")
+        db.commit()  
+        cursor.close()
+        return True
     
 class agendamentos():
 
