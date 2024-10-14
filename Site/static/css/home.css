@@ -2767,20 +2767,20 @@ textarea.form-control-lg {
 }
 
 .btn-whatsapp {
-  --bs-btn-color: #fff; /* Cor do texto */
-  --bs-btn-bg: #25D366; /* Cor de fundo verde do WhatsApp */
-  --bs-btn-border-color: #25D366; /* Cor da borda igual ao fundo */
-  --bs-btn-hover-color: #fff; /* Cor do texto ao passar o mouse */
-  --bs-btn-hover-bg: #1DA851; /* Cor de fundo ao passar o mouse */
-  --bs-btn-hover-border-color: #1DA851; /* Borda ao passar o mouse */
-  --bs-btn-focus-shadow-rgb: 37, 211, 102; /* Sombra de foco na cor verde */
-  --bs-btn-active-color: #fff; /* Cor do texto ao clicar */
-  --bs-btn-active-bg: #128C7E; /* Cor de fundo ao clicar */
-  --bs-btn-active-border-color: #128C7E; /* Borda ao clicar */
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); /* Sombra ao clicar */
-  --bs-btn-disabled-color: #fff; /* Cor do texto do botão desativado */
-  --bs-btn-disabled-bg: #25D366; /* Fundo do botão desativado */
-  --bs-btn-disabled-border-color: #25D366; /* Borda do botão desativado */
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #25D366;
+  --bs-btn-border-color: #25D366;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #1DA851;
+  --bs-btn-hover-border-color: #1DA851;
+  --bs-btn-focus-shadow-rgb: 37, 211, 102;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #128C7E;
+  --bs-btn-active-border-color: #128C7E;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #25D366;
+  --bs-btn-disabled-border-color: #25D366;
 }
 
 .btn-secondary {

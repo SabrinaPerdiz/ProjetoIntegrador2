@@ -1,0 +1,237 @@
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+body {
+    background: linear-gradient(to right, rgba(var(--bs-style-1-light-rgb,1)), rgba(var(--bs-style-2-light-rgb,1)));
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.btn-icon-plus {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: rgb(210, 166, 121);
+    --bs-btn-border-color: rgb(210, 166, 121);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgb(210, 166, 121);
+    --bs-btn-hover-border-color: rgb(210, 166, 121);
+    --bs-btn-focus-shadow-rgb: 210, 166, 121;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: rgb(210, 166, 121);
+    --bs-btn-active-border-color: rgb(210, 166, 121);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: rgb(210, 166, 121);
+    --bs-btn-disabled-border-color: rgb(210, 166, 121);
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 2px solid rgba(var(--bs-style-2-rgb, 1));
+    width: 100%;
+}
+
+.table-wrapper {
+    padding-left: 80px;
+}
+
+thead th {
+    color: #ffffff;
+    padding: 10px;
+    text-align: left;
+}
+
+.rounded-header th {
+    border-radius: 10px;
+}
+
+.table tbody tr {
+    background-color: rgba(var(--bs-style-1-rgb, 1));
+}
+
+.table td {
+    position: relative;
+    padding: 10px;
+    line-height: 3;
+}
+
+.table td::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: rgba(var(--bs-style-2-rgb, 1));
+}
+
+@media (max-width: 1200px) {
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    .table td,
+    .table th {
+        padding: 8px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .table-wrapper {
+        padding-left: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .table td,
+    .table th {
+        padding: 6px;
+    }
+
+    .table {
+        font-size: 0.8rem;
+    }
+
+    .table-wrapper {
+        padding-left: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .table td,
+    .table th {
+        padding: 4px;
+    }
+
+    .table {
+        font-size: 0.7rem;
+    }
+
+    .table-wrapper {
+        padding-left: 10px;
+    }
+}
+
+.btn {
+    margin-right: 5px; /* Espaço entre os botões */
+}
+
+.form-control {
+    border: 1px solid rgba(var(--bs-style-1-rgb, 1));
+    border-radius: 4px;
+}
+
+.form-control:focus {
+    border-color: rgba(var(--bs-style-2-rgb, 1));
+    box-shadow: none;
+}
+
+#filterInput {
+    margin-bottom: 20px;
+}
+
+.input-group .form-control,
+.input-group .btn {
+    height: 100%;
+}
+
+.input-group {
+    display: flex;
+    align-items: stretch;
+}
+
+
+/* Garante que botões do tipo button e input não tenham foco visual */
+button, input[type="button"], input[type="submit"] {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+#textInput {
+  width: 100%;
+  padding-right: 40px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#clearButton {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: rgba(var(--bs-style-2-rgb, 1));
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  z-index: 1;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.input-group {
+    flex: 1;
+    height: 38px;
+}
+
+.input-group input {
+    height: 100%;
+}
+
+.input-group button {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#calendar-addon {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.me-2 {
+    margin-right: 0.5rem; 
+}
+
+
+@media screen and (max-width: 600px) {
+    .input-container {
+      max-width: 100%;
+    }
+    
+    #clearButton {
+      right: 5px;
+  }
+}
+

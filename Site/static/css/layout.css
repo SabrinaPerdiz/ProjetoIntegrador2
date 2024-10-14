@@ -27,7 +27,7 @@
   --bs-secondary: #6c757d;
   --bs-success: #198754;
   --bs-info: #0dcaf0;
-  --bs-warning: #ffc107;
+  --bs-warning: #ffa000;
   --bs-danger: #dc3545;
   --bs-light: #f8f9fa;
   --bs-dark: #212529;
@@ -67,6 +67,11 @@
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
   --bs-whatsapp-color-rgb: #25d366;
+  --bs-action-card-rgb: 191, 140, 90;
+  --bs-style-1-rgb: 210, 166, 121;
+  --bs-style-2-rgb: 139, 69, 19;
+  --bs-style-1-light-rgb: 247, 227, 214;
+  --bs-style-2-light-rgb: 255, 228, 208;
 }
 
 body {
@@ -80,4 +85,74 @@ body {
     background-color: var(--bs-body-bg);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.bg-style-1 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-style-1-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.bg-style-2 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-style-2-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.feature {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.icon-large {
+  font-size: 2rem;
+}
+
+.navbar {
+  position: relative;
+}
+
+.navbar .btn-link {
+  color: #ffffff;
+  margin-right: 10px; 
+  font-size: 20px; 
+  text-decoration: none; 
+  position: absolute; 
+  left: 15px; 
+  top: 15px;
+}
+
+.navbar .btn-link:hover {
+  color: #ffffff; 
+  text-decoration: none; 
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .navbar .btn-link {
+      font-size: 18px;
+      left: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar .btn-link {
+      font-size: 16px;
+      left: 5px;
+  }
+}
+
+.back-button {
+  text-decoration: none;
+}
+
+.back-button:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.modal {
+  pointer-events: none;
+}
+
+.modal-content {
+  pointer-events: auto;
 }

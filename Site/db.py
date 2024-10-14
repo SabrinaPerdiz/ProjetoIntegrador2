@@ -82,6 +82,18 @@ class cliente():
             return True
         else:
             return False
+
+    def delete_cliente(cliente_id):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        try:
+            cursor.execute('DELETE FROM clientes WHERE id_cliente = %s', (cliente_id,))
+            db.commit()
+        except Exception as e:
+            db.rollback()
+            raise e 
+        finally:
+            cursor.close()
     
 class agendamentos():
 
@@ -106,6 +118,38 @@ class agendamentos():
         db = getdb()
         cursor = db.cursor(dictionary=True)
         cursor.execute('update agendamentos set (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
+        db.commit()
+        cursor.close()
+        affected_rows = cursor.rowcount
+        if affected_rows is not None and affected_rows > 0:
+            cursor.close()
+            return True
+        else:
+            return False
+
+class servico():
+
+    def get_servico():
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('select * from Procedimentos')
+        procedimentos = cursor.fetchall()    
+        print(procedimentos)
+        cursor.close()
+        return procedimentos
+    
+    def insert_servico(id_procedimento,nome,descricao):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('insert Procedimentos set (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
+        db.commit()
+        cursor.close()
+        return cursor.lastrowid()
+    
+    def update_servico(id_procedimento,nome,descricao):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('update Procedimentos set (id_procedimento,nome,descricao) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
         db.commit()
         cursor.close()
         affected_rows = cursor.rowcount
