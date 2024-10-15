@@ -17,7 +17,9 @@ CREATE TABLE usuarios (
 );
 
 CREATE TABLE Procedimentos (
-	id_procedimento INT AUTO_INCREMENT PRIMARY KEY
+	id_procedimento INT AUTO_INCREMENT PRIMARY KEY,
+  nome TEXT,
+  descricao TEXT
 );
 
 -- Tabela Agendamentos
@@ -25,9 +27,8 @@ CREATE TABLE Agendamentos (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT,
     id_procedimento INT,
-    data_agendamento DATE,
-    hora_agendamento TIME,
-    data_realizacao DATE,
+    data_agendamento DATETIME,
+    data_realizacao DATETIME,
     tipo_servico ENUM('montagem', 'reforma', 'instalações'),
     descricao_servico TEXT,
     status ENUM('pendente', 'confirmado', 'realizado', 'cancelado'),
