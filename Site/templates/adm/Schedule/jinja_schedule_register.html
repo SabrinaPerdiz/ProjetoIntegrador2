@@ -8,8 +8,15 @@
 
 {% block body %}
 <main>
+    <label>{{ schedule }}</label>
     <div class="card">
-        <h2 class="card-title text-center">{{ strings.title }}</h2>
+        <h2 class="card-title text-center">
+            {% if schedule  %}
+                {{ strings.edit_title }}
+            {% else %}
+                {{ strings.title }}
+            {% endif %}
+        </h2>
         <form action="/servicos/cadastro" method="POST">
             <div class="input-group">
                 <label>Nome:</label>
@@ -23,8 +30,8 @@
             </div>
             <div class="input-group">
                 <label>Data de nascimento:</label>
-                <input type="date" name="data_nascimento" class="form-control ml-2"
-                    aria-describedby="basic-addon1" min="2024-01-01" max="2100-01-01"/>
+                <input type="datetime-local" name="data_nascimento" class="form-control ml-2"
+                    aria-describedby="basic-addon1" min="2024-01-01T00:00" max="2100-01-01T23:59"/>
             </div>
             <div class="input-group">
                 <label>Endereço:</label>
@@ -42,7 +49,13 @@
                     aria-describedby="basic-addon1" />
             </div>
             <div class="text-center">
-                <button type="submit" class="button-confirm">{{ strings.register_btn }}</button>
+                <button type="submit" class="button-confirm">
+                    {% if schedule  %}
+                        {{ strings.edit_btn }}
+                    {% else %}
+                        {{ strings.register_btn }}
+                    {% endif %}
+                </button>
             </div>
         </form>
     </div>

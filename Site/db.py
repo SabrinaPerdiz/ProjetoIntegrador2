@@ -74,7 +74,7 @@ class cliente():
     def update_cliente(id,nome,telefone,data_nascimento,endereco,facebook,instagram):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('update clientes set (nome,telefone,data_nascimento,endereco,facebook,instagram) values ('+nome+','+telefone+','+data_nascimento+','+endereco+','+facebook+','+instagram+') where id_cliente='+id)
+        cursor.execute('update clientes set nome = %s, telefone = %s, data_nascimento = %s, endereco = %s, facebook = %s, instagram = %s WHERE id_cliente = %s', (nome, telefone, data_nascimento, endereco, facebook, instagram, id))
         db.commit()  
         affected_rows = cursor.rowcount
         if affected_rows is not None and affected_rows > 0:
@@ -87,49 +87,26 @@ class cliente():
         db = getdb()
         cursor = db.cursor(dictionary=True)
         try:
-            cursor.execute('DELETE FROM clientes WHERE id_cliente = %s', (cliente_id,))
+            cursor.execute('DELETE FROM clientes where id_cliente = %s', (cliente_id,))
             db.commit()
         except Exception as e:
             db.rollback()
             raise e 
         finally:
             cursor.close()
-    
-class agendamentos():
 
-    def get_agendamentos():
+    def get_cliente(cliente_id):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('select * from agendamentos')
-        agendamentos = cursor.fetchall()    
-        print(agendamentos)
+        cursor.execute('select * from clientes where id_cliente = %s', (cliente_id,))
+        cliente = cursor.fetchone()    
+        print(cliente)
         cursor.close()
-        return agendamentos
-    
-    def insert_agendamentos(id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes):
-        db = getdb()
-        cursor = db.cursor(dictionary=True)
-        cursor.execute('insert into agendamentos (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
-        db.commit()
-        cursor.close()
-        return cursor.lastrowid()
-    
-    def update_agendamentos(id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes):
-        db = getdb()
-        cursor = db.cursor(dictionary=True)
-        cursor.execute('update agendamentos set (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
-        db.commit()
-        cursor.close()
-        affected_rows = cursor.rowcount
-        if affected_rows is not None and affected_rows > 0:
-            cursor.close()
-            return True
-        else:
-            return False
+        return cliente
 
 class servico():
 
-    def get_servico():
+    def get_servicos():
         db = getdb()
         cursor = db.cursor(dictionary=True)
         cursor.execute('select * from Procedimentos')
@@ -157,4 +134,78 @@ class servico():
             cursor.close()
             return True
         else:
+            return False,
+
+    def delete_servico(work_id):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        try:
+            cursor.execute('DELETE FROM Procedimentos WHERE id_procedimento = %s', (work_id,))
+            db.commit()
+        except Exception as e:
+            db.rollback()
+            raise e 
+        finally:
+            cursor.close()
+
+    def get_servico(work_id):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('select * from Procedimentos where id_procedimento = %s', (work_id,))
+        work = cursor.fetchone()    
+        print(work)
+        cursor.close()
+        return work
+    
+class agendamento():
+
+    def get_agendamentos():
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('select * from agendamentos')
+        agendamentos = cursor.fetchall()    
+        print(agendamentos)
+        cursor.close()
+        return agendamentos
+    
+    def insert_agendamento(id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('insert into agendamentos (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
+        db.commit()
+        cursor.close()
+        return cursor.lastrowid()
+    
+    def update_agendamento(id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('update agendamentos set (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
+        db.commit()
+        cursor.close()
+        affected_rows = cursor.rowcount
+        if affected_rows is not None and affected_rows > 0:
+            cursor.close()
+            return True
+        else:
             return False
+
+    def delete_agendamento(schedule_id):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        try:
+            cursor.execute('DELETE FROM agendamentos WHERE id_agendamento = %s', (schedule_id,))
+            db.commit()
+        except Exception as e:
+            db.rollback()
+            raise e 
+        finally:
+            cursor.close()
+
+    def get_agendamento(schedule_id):
+        db = getdb()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute('select * from agendamentos where id_agendamento = %s', (schedule_id,))
+        schedule = cursor.fetchone()    
+        print(schedule)
+        cursor.close()
+        return schedule

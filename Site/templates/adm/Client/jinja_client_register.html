@@ -8,41 +8,54 @@
 
 {% block body %}
 <main>
+    <label>{{ cliente }}</label>
     <div class="card">
-        <h2 class="card-title text-center">{{ strings.title }}</h2>
-        <form action="/clientes/cadastro" method="POST">
+        <h2 class="card-title text-center">
+            {% if cliente  %}
+                {{ strings.edit_title }}
+            {% else %}
+                {{ strings.title }}
+            {% endif %}
+        </h2>
+        <form action="{% if cliente %}/clientes/{{ cliente['id_cliente'] }}{% else %}/clientes/cadastro{% endif %}" method="POST">
             <div class="input-group">
                 <label>Nome:</label>
                 <input type="text" name="nome" class="form-control ml-2" required="required" placeholder="Nome"
-                    aria-describedby="basic-addon1" />
+                    aria-describedby="basic-addon1" value="{{ cliente.nome| default('') }}"/>
             </div>
             <div class="input-group">
                 <label>Telefone:</label>
                 <input type="text" name="telefone" class="form-control ml-2" required="required" placeholder="Telefone"
-                    aria-describedby="basic-addon1" />
+                    aria-describedby="basic-addon1" value="{{ cliente.telefone| default('') }}"/>
             </div>
             <div class="input-group">
                 <label>Data de nascimento:</label>
                 <input type="date" name="data_nascimento" class="form-control ml-2"
-                    aria-describedby="basic-addon1" min="2024-01-01" max="2100-01-01"/>
+                    aria-describedby="basic-addon1" min="2024-01-01" max="2100-01-01" value="{{ cliente.data_nascimento | default('') }}"/>
             </div>
             <div class="input-group">
                 <label>Endereço:</label>
                 <input type="text" name="endereco" class="form-control ml-2" placeholder="Endereço"
-                    aria-describedby="basic-addon1" />
+                    aria-describedby="basic-addon1" value="{{ cliente.endereco | default('') }}"/>
             </div>
             <div class="input-group">
                 <label>Facebook:</label>
                 <input type="text" name="facebook" class="form-control ml-2" placeholder="Facebook"
-                    aria-describedby="basic-addon1" />
+                    aria-describedby="basic-addon1" value="{{ cliente.facebook | default('') }}"/>
             </div>
             <div class="input-group">
                 <label>Instagram:</label>
                 <input type="text" name="instagram" class="form-control ml-2" placeholder="Instagram"
-                    aria-describedby="basic-addon1" />
+                    aria-describedby="basic-addon1" value="{{ cliente.instagram | default('') }}"/>
             </div>
             <div class="text-center">
-                <button type="submit" class="button-confirm">{{ strings.register_btn }}</button>
+                <button type="submit" class="button-confirm">
+                    {% if cliente  %}
+                        {{ strings.edit_btn }}
+                    {% else %}
+                        {{ strings.register_btn }}
+                    {% endif %}
+                </button>
             </div>
         </form>
     </div>

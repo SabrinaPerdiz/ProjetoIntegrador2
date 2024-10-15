@@ -72,6 +72,7 @@
   --bs-style-2-rgb: 139, 69, 19;
   --bs-style-1-light-rgb: 247, 227, 214;
   --bs-style-2-light-rgb: 255, 228, 208;
+  --bs-style-3-light-rgb: 220, 188, 168;
 }
 
 body {
@@ -156,3 +157,19 @@ body {
 .modal-content {
   pointer-events: auto;
 }
+
+/* (Chrome e afins, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: rgba(139, 69, 19, 0.9);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(210, 166, 121, 0.8);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(169, 127, 96, 0.9);
+}
+

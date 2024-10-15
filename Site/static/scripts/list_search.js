@@ -9,6 +9,8 @@ window.onload = function() {
     filterDateTable(dateInput.value)
 };
 
+
+
 function filterTable() {
     const input = document.getElementById("filterInput")
     const filter = input.value.toLowerCase()
@@ -44,10 +46,10 @@ function filterDateTable() {
 
     for (let i = 0; i < visibleRows.length; i++) {
         const rowDate = visibleRows[i].getAttribute('data-date')
+        const [date, time] = rowDate.split(' ')
+        const rowVisible = date === selectedDate;
 
-        const rowVisible = rowDate === selectedDate;
-
-        visibleRows[i].style.display = rowVisible ? "" : "none" // Aplica a visibilidade
+        visibleRows[i].style.display = rowVisible ? "" : "none"
     }
 }
 
@@ -57,9 +59,9 @@ function clearFilter() {
     filterTable()
 }
 
-function deleteOnList(id) {
-    if (confirm("Tem certeza que deseja deletar este cliente?")) {
-        fetch(`/clientes/${id}`, {
+function deleteOnList(id, url, message) {
+    if (confirm(message)) {
+        fetch(`/${url}/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -71,10 +73,15 @@ function deleteOnList(id) {
                     console.log(errorData.error);
                 });
             }
-            window.location.href = '/clientes';
+            window.location.href = `/${url}`;
         })
         .catch(error => {
             console.log(error);
         });
     }
+}
+
+function editObj(obj, id_field, url) {
+    console.log(obj)
+    window.location.href = `/${url}/${obj[id_field]}`;
 }
