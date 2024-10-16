@@ -16,6 +16,7 @@
             <thead class="thead-dark bg-style-2 text-center align-middle">
                 <tr>
                     <th scope="col">Nome</th>
+                    <th scope="col">CPF/CNPJ</th>
                     <th scope="col">
                         <div class="d-flex justify-content-between align-items-center">
                             <span>Telefone</span>
@@ -32,6 +33,7 @@
             {% for cliente in clientes %}
             <tr>
                 <td id="{{cliente['nome']}}">{{cliente['nome']}}</td>
+                <td id="{{cliente['nome']}}">{{cliente['cpf_cnpj']}}</td>
                 <td>
                     <div class="d-flex justify-content-between align-items-center tiny-column">
                         <span>{{ cliente['telefone'] }}</span>

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import LoginManager, UserMixin, login_required, current_user, login_user, logout_user
 from dotenv import load_dotenv
+from datetime import datetime
 import importlib
 import os
 import db
@@ -97,7 +98,6 @@ def dashboard():
 @login_required
 def clientes_cadastrados():
     strings = load_strings('adm','clients')
-    mock_clients = db.cliente.get_clientes()
     return render_template("/adm/Client/jinja_clients_list.html",clientes=db.cliente.get_clientes(), strings=strings, nav_strings=nav_strings)
 
 #Tela Cadastro de Clientes
@@ -108,12 +108,17 @@ def cadastro_cliente():
     if request.method == 'POST':
         nome = request.form['nome']
         telefone = request.form['telefone']
-        data_nascimento = '"'+request.form['data_nascimento']+'"' if request.form['data_nascimento'] != '' else "null"
-        facebook = '"'+request.form['facebook']+'"' if request.form['facebook'] != '' else "null"
-        instagram = '"'+request.form['instagram']+'"' if request.form['instagram'] != '' else "null"
-        endereco = '"'+request.form['endereco']+'"' if request.form['endereco'] != '' else "null"
-        retorno = db.cliente.insert_cliente(nome,telefone,data_nascimento,endereco,facebook,instagram)
-        retorno = 'nom'
+        data_nascimento = request.form['data_nascimento'] if request.form['data_nascimento'] != '' else "null"
+        cpf_cnpj = request.form['cpf_cnpj']
+        cep = request.form['cep'].replace('.', '').replace('-', '')
+        rua = request.form['rua']
+        numero = request.form['numero']
+        bairro = request.form['bairro']
+        cidade = request.form['cidade']
+        estado = request.form['estado']
+        referencia = request.form['referencia'] if request.form['referencia'] != '' else "null"
+        endereco = "${rua},${numero},${bairro},${cidade},${estado}"
+        retorno = db.cliente.insert_cliente(nome, telefone ,data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia)
         if retorno != None:
             flash( status['success_register_user'], 'success')
             return redirect(url_for('clientes_cadastrados'))
@@ -136,13 +141,18 @@ def delete_cliente(cliente_id):
          return render_template("/adm/Client/jinja_client_register.html", nav_strings=nav_strings, strings=strings,cliente=db.cliente.get_cliente(cliente_id))
     if request.method == 'POST':
         nome = request.form['nome']
+        cpf_cnpj = request.form['cpf_cnpj']
         telefone = request.form['telefone']
         data_nascimento = request.form['data_nascimento'] if request.form['data_nascimento'] != "" else "null"
-        facebook = request.form['facebook'] if request.form['facebook'] != '' else "null"
-        instagram = request.form['instagram'] if request.form['instagram'] != '' else "null"
-        endereco = request.form['endereco'] if request.form['endereco'] != '' else "null"
-        retorno = db.cliente.update_cliente(cliente_id,nome,telefone,data_nascimento,endereco,facebook,instagram)
-        retorno = 'nom'
+        cep = request.form['cep'].replace('.', '').replace('-', '')
+        rua = request.form['rua']
+        numero = request.form['numero']
+        bairro = request.form['bairro']
+        cidade = request.form['cidade']
+        estado = request.form['estado']
+        referencia = request.form['referencia'] if request.form['referencia'] != '' else "null"
+        endereco = "${rua},${numero},${bairro},${cidade},${estado}"
+        retorno = db.cliente.update_cliente(cliente_id, nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia)
         if retorno != None:
             flash( status['success_edit_user'], 'success')
             return redirect(url_for('clientes_cadastrados'))
@@ -155,7 +165,7 @@ def delete_cliente(cliente_id):
 @login_required
 def servicos_cadastrados():
     strings = load_strings('adm','works')
-    return render_template("/adm/Work/jinja_works_list.html",works=db.servico.get_servicos() * 13, strings=strings, nav_strings=nav_strings)
+    return render_template("/adm/Work/jinja_works_list.html",works=db.servico.get_servicos(), strings=strings, nav_strings=nav_strings)
 
 #Tela Cadastro de Serviços
 @app.route("/serviços/cadastro", methods=['GET','POST'])
@@ -164,8 +174,9 @@ def cadastro_servico():
     strings = load_strings('adm','register_work')
     if request.method == 'POST':
         # Informações do serviço
-        # retorno = db.servico.insert_servico()
-        retorno = 'nom'
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+        retorno = db.servico.insert_servico(nome, descricao)
         if retorno != None:
             flash( status['success_register_work'], 'success')
             return redirect(url_for('cadastro_servico'))
@@ -188,8 +199,9 @@ def delete_service(service_id):
          return render_template("/adm/Work/jinja_work_register.html", nav_strings=nav_strings, strings=strings,work=db.servico.get_servico(service_id))
     if request.method == 'POST':
         # Informações do serviço
-        # retorno = db.servico.update_servico(service_id,)
-        retorno = 'nom'
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+        retorno = db.servico.update_servico(service_id, nome, descricao)
         if retorno != None:
             flash( status['success_edit_work'], 'success')
             return redirect(url_for('servicos_cadastrados'))
@@ -201,24 +213,50 @@ def delete_service(service_id):
 @login_required
 def agendamentos_cadastrados():
     strings = load_strings('adm','schedulings')
-    return render_template("/adm/Schedule/jinja_schedules_list.html",schedulings=db.agendamento.get_agendamentos(), strings=strings, nav_strings=nav_strings)
+    schedulings = db.agendamento.get_agendamentos()
+
+    clientes = db.cliente.get_clientes() 
+    servicos = db.servico.get_servicos()
+
+    clientes_dict = {cliente['id_cliente']: cliente['nome'] for cliente in clientes}
+    servicos_dict = {servico['id_procedimento']: servico['nome'] for servico in servicos}
+
+    for scheduling in schedulings:
+        scheduling['cliente_nome'] = clientes_dict.get(scheduling['id_cliente'], '')
+        scheduling['servico_nome'] = servicos_dict.get(scheduling['id_procedimento'], '')
+        scheduling['hora_formatada'] = scheduling['datahora_realizacao'].strftime('%H:%M')
+   
+    return render_template("/adm/Schedule/jinja_schedules_list.html",schedulings=schedulings, strings=strings, nav_strings=nav_strings)
 
 #Tela Cadastro de Agendamentos
 @app.route("/agendamentos/cadastro", methods=['GET','POST'])
 @login_required
 def cadastro_agendamento():
     strings = load_strings('adm','register_schedule')
+    if request.method == 'GET':
+        schedule = {'servicos': [], 'clientes': []}
+        schedule['servicos'] = db.servico.get_servicos()
+        schedule['clientes'] = db.cliente.get_clientes()
+        schedule['servico'] = ''
+        schedule['cliente'] = ''
+        schedule['status_list'] = ['Pendente', 'Confirmado', 'Realizado', 'Cancelado']
     if request.method == 'POST':
         # Informações do agendamento
-        # retorno = db.agendamento.insert_agendamento()
-        retorno = 'nom'
+        cliente = int(request.form.get('cliente_select'))
+        servico = int(request.form.get('servico_select'))
+        status_select = request.form.get('status_select')
+        datahora_agendamento = request.form['datahora_agendamento']
+        datahora_realizacao = request.form['datahora_realizacao'] if request.form['datahora_realizacao'] != '' else "null"
+        descricao_servico = request.form['descricao_servico'] if request.form['descricao_servico'] != '' else "null"
+        observacoes = request.form['observacoes'] if request.form['observacoes'] != '' else "null"
+        retorno = db.agendamento.insert_agendamento(cliente, servico, datahora_agendamento, datahora_realizacao, status_select, descricao_servico, observacoes)
         if retorno != None:
-            flash( status['success_register_schedule'], 'success')
+            flash(status['success_register_schedule'], 'success')
             return redirect(url_for('cadastro_agendamento'))
-    return render_template("/adm/Schedule/jinja_schedule_register.html", nav_strings=nav_strings, strings=strings, schedule=None) 
+    return render_template("/adm/Schedule/jinja_schedule_register.html", nav_strings=nav_strings, strings=strings, schedule=schedule) 
 
 #Rota de deleção de Agendamentos
-@app.route("/agendamentos/<int:schedule_id>", methods=['GET', 'DELETE'])
+@app.route("/agendamentos/<int:schedule_id>", methods=['GET', 'POST', 'DELETE'])
 @login_required
 def delete_schedule(schedule_id):
     strings = load_strings('adm','register_schedule')
@@ -231,11 +269,23 @@ def delete_schedule(schedule_id):
             flash(status['error_delete_schedule'], 'danger')
             return jsonify({"error": str(e)}), 400
     if request.method == 'GET':
-         return render_template("/adm/Schedule/jinja_schedule_register.html", nav_strings=nav_strings, strings=strings,schedule=db.agendamento.get_agendamento(schedule_id))
+        schedule = db.agendamento.get_agendamento(schedule_id)
+        schedule['servicos'] = schedule.get('servicos', db.servico.get_servicos())
+        schedule['clientes'] = schedule.get('clientes', db.cliente.get_clientes())
+        schedule['status_list'] = ['Pendente', 'Confirmado', 'Realizado', 'Cancelado']
+        schedule['servico'] = [servico for servico in schedule['servicos'] if servico['id_procedimento'] == schedule['id_procedimento']][0]
+        schedule['cliente'] = [cliente for cliente in schedule['clientes'] if cliente['id_cliente'] == schedule['id_cliente']][0]
+        return render_template("/adm/Schedule/jinja_schedule_register.html", nav_strings=nav_strings, strings=strings,schedule=schedule)
     if request.method == 'POST':
         # Informações do agendamento
-        # retorno = db.agendamento.update_schedule(schedule_id,)
-        retorno = 'nom'
+        cliente = int(request.form.get('cliente_select') if request.form.get('cliente_select') else request.form['cliente_id'])
+        servico = int(request.form.get('servico_select') if request.form.get('servico_select') else request.form['servico_id'])
+        status_select = request.form.get('status_select') if request.form.get('status_select') else request.form['status_not_changed']
+        datahora_agendamento = request.form['datahora_agendamento']
+        datahora_realizacao = request.form['datahora_realizacao'] if request.form['datahora_realizacao'] != '' else "null"
+        descricao_servico = request.form['descricao_servico'] if request.form['descricao_servico'] != '' else "null"
+        observacoes = request.form['observacoes'] if request.form['observacoes'] != '' else "null"
+        retorno = db.agendamento.update_agendamento(schedule_id,cliente, servico, datahora_agendamento, datahora_realizacao, status_select, descricao_servico, observacoes)
         if retorno != None:
             flash( status['success_edit_schedule'], 'success')
             return redirect(url_for('agendamentos_cadastrados'))

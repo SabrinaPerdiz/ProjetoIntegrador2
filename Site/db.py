@@ -62,19 +62,18 @@ class cliente():
         return clientes
     
     #Insere um cliente novo na tabela
-    def insert_cliente(nome,telefone,data_nascimento,endereco,facebook,instagram):
+    def insert_cliente(nome,telefone,data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        print('insert into clientes (nome,telefone,data_nascimento,endereco,facebook,instagram) values ("'+nome+'","'+telefone+'",'+data_nascimento+','+endereco+','+facebook+','+instagram+')')
-        cursor.execute('insert into clientes (nome,telefone,data_nascimento,endereco,facebook,instagram) values ("'+nome+'","'+telefone+'",'+data_nascimento+','+endereco+','+facebook+','+instagram+')')
+        cursor.execute('insert clientes set nome = %s, telefone = %s, data_nascimento = %s, cpf_cnpj = %s, endereco = %s, cep = %s, rua = %s, numero_casa = %s, bairro = %s, cidade = %s, estado = %s, referencia_end = %s', (nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia))
         db.commit()  
         cursor.close()
         return 1
     
-    def update_cliente(id,nome,telefone,data_nascimento,endereco,facebook,instagram):
+    def update_cliente(cliente_id, nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('update clientes set nome = %s, telefone = %s, data_nascimento = %s, endereco = %s, facebook = %s, instagram = %s WHERE id_cliente = %s', (nome, telefone, data_nascimento, endereco, facebook, instagram, id))
+        cursor.execute('update clientes set nome = %s, telefone = %s, data_nascimento = %s, cpf_cnpj = %s, endereco = %s, cep = %s, rua = %s, numero_casa = %s, bairro = %s, cidade = %s, estado = %s, referencia_end = %s', (nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia))
         db.commit()  
         affected_rows = cursor.rowcount
         if affected_rows is not None and affected_rows > 0:
@@ -115,18 +114,18 @@ class servico():
         cursor.close()
         return procedimentos
     
-    def insert_servico(id_procedimento,nome,descricao):
+    def insert_servico(nome,descricao):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('insert Procedimentos set (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
-        db.commit()
+        cursor.execute('insert Procedimentos set nome = %s, descricao = %s', (nome, descricao))
+        db.commit()  
         cursor.close()
-        return cursor.lastrowid()
+        return 1
     
     def update_servico(id_procedimento,nome,descricao):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('update Procedimentos set (id_procedimento,nome,descricao) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
+        cursor.execute('update Procedimentos set nome = %s, descricao = %s WHERE id_procedimento = %s', (nome, descricao, id_procedimento))
         db.commit()
         cursor.close()
         affected_rows = cursor.rowcount
@@ -168,18 +167,18 @@ class agendamento():
         cursor.close()
         return agendamentos
     
-    def insert_agendamento(id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes):
+    def insert_agendamento(id_cliente, id_procedimento, datahora_agendamento, datahora_realizacao, status, descricao_servico, observacoes):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('insert into agendamentos (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
+        cursor.execute('insert agendamentos set id_cliente = %s, id_procedimento = %s, datahora_agendamento = %s, datahora_realizacao = %s, status = %s, descricao_servico = %s, observacoes = %s ', (id_cliente, id_procedimento, datahora_agendamento, datahora_realizacao, status, descricao_servico, observacoes))
         db.commit()
         cursor.close()
-        return cursor.lastrowid()
+        return 1
     
-    def update_agendamento(id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes):
+    def update_agendamento(id_agendamento, id_cliente, id_procedimento, datahora_agendamento, datahora_realizacao, status, descricao_servico, observacoes):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('update agendamentos set (id_cliente,id_procedimento,data_agendamento,hora_agendamento,data_realização,status,observacoes) values ('+id_cliente+','+id_procedimento+','+data_agendamento+','+hora_agendamento+','+data_realização+','+status+','+observacoes+')')
+        cursor.execute('update agendamentos set id_cliente = %s, id_procedimento = %s, datahora_agendamento = %s,datahora_realizacao = %s, status = %s, descricao_servico = %s, observacoes = %s WHERE id_agendamento = %s', (id_cliente,id_procedimento,datahora_agendamento,datahora_realizacao,status,descricao_servico,observacoes, id_agendamento))
         db.commit()
         cursor.close()
         affected_rows = cursor.rowcount

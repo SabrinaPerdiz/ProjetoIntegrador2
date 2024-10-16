@@ -2,13 +2,12 @@
 
 {% block head %}
 <title>{{ strings.title }}</title>
-<link rel="stylesheet" href="/static/css/register_client.css">
+<link rel="stylesheet" href="/static/css/register.css">
 <script src="{{ url_for('static', filename='scripts/home.js') }}"></script>
 {% endblock %}
 
 {% block body %}
 <main>
-    <label>{{ work }}</label>
     <div class="card">
         <h2 class="card-title text-center">
             {% if work  %}
@@ -17,36 +16,15 @@
                 {{ strings.title }}
             {% endif %}
         </h2>
-        <form action="/agendamentos/cadastro" method="POST">
+        <form action="{% if work %}/serviços/{{ work['id_procedimento'] }}{% else %}/serviços/cadastro{% endif %}" method="POST">
             <div class="input-group">
                 <label>Nome:</label>
                 <input type="text" name="nome" class="form-control ml-2" required="required" placeholder="Nome"
-                    aria-describedby="basic-addon1" />
+                    aria-describedby="basic-addon1" value="{{ work.nome| default('') }}"/>
             </div>
             <div class="input-group">
-                <label>Telefone:</label>
-                <input type="text" name="telefone" class="form-control ml-2" required="required" placeholder="Telefone"
-                    aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group">
-                <label>Data de nascimento:</label>
-                <input type="date" name="data_nascimento" class="form-control ml-2"
-                    aria-describedby="basic-addon1" min="2024-01-01" max="2100-01-01"/>
-            </div>
-            <div class="input-group">
-                <label>Endereço:</label>
-                <input type="text" name="endereco" class="form-control ml-2" placeholder="Endereço"
-                    aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group">
-                <label>Facebook:</label>
-                <input type="text" name="facebook" class="form-control ml-2" placeholder="Facebook"
-                    aria-describedby="basic-addon1" />
-            </div>
-            <div class="input-group">
-                <label>Instagram:</label>
-                <input type="text" name="instagram" class="form-control ml-2" placeholder="Instagram"
-                    aria-describedby="basic-addon1" />
+                <label>Descrição:</label>
+                <textarea class="form-control" name="descricao" type="text" placeholder="Descrição" style="height: 10rem" required>{{ work.descricao| default('') }}</textarea>
             </div>
             <div class="text-center">
                 <button type="submit" class="button-confirm">

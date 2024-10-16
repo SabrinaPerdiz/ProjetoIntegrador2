@@ -17,3 +17,16 @@ function redirectToWhatsapp(phoneNumber ) {
 function scrollToBottom() {
     window.scrollTo(0, document.body.scrollHeight);
 }
+
+function updateArrow(up, down) {
+    const arrowUp = document.getElementById(up);
+    const arrowDown = document.getElementById(down);
+
+    if (arrowDown.style.display === "none") {
+        arrowUp.style.display = 'none'; 
+        arrowDown.style.display = 'inline';
+    } else {
+        arrowUp.style.display = 'inline';
+        arrowDown.style.display = 'none';
+    }
+}

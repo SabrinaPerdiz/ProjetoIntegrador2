@@ -96,8 +96,22 @@ body {
     }
 }
 
-@media (max-width: 576px) {
-    .card-title {
-        font-size: 1.5rem;
-    }
+
+.select-wrapper {
+    flex: 1;
+    width: 100%;
+}
+
+.custom-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: rgb(139, 69, 19);
+}
+
+.custom-select option {
+    background-color: rgba(var(--bs-style-3-light-rgb, 1));
+    color: rgb(139, 69, 19);
 }
