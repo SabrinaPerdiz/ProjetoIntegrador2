@@ -21,6 +21,7 @@ CREATE TABLE clientes (
   PRIMARY KEY (`id_cliente`)
 );
 
+
 -- Tabela Usuários
 CREATE TABLE IF NOT EXISTS usuarios (
   id_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

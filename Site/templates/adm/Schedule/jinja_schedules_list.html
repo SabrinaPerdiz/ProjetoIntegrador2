@@ -57,7 +57,7 @@
             </thead>
             <tbody>
             {% for scheduling in schedulings %}
-            <tr data-date="{{ scheduling['datahora_agendamento'] }}">
+            <tr data-date="{{ scheduling['datahora_realizacao'] }}">
                 <td id="{{scheduling['id_cliente']}}">{{scheduling['cliente_nome']}}</td>
                 <td>{{scheduling['servico_nome']}}</td>
                 <td>{{scheduling['hora_formatada']}}</td>
