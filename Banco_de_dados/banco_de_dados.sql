@@ -40,12 +40,10 @@ CREATE TABLE Procedimentos (
 CREATE TABLE Agendamentos (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT,
-    id_procedimento INT,
     datahora_agendamento DATETIME,
     datahora_realizacao DATETIME,
     descricao_servico TEXT,
     status ENUM('pendente', 'confirmado', 'realizado', 'cancelado'),
     observacoes TEXT,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
-    FOREIGN KEY (id_procedimento) REFERENCES Procedimentos(id_procedimento)
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)
 );
