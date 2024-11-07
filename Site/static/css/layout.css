@@ -182,3 +182,10 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield; /* Remover setas no Firefox */
 }
+
+.acessibilidade {
+  display: none;  
+  background-color: white;
+  border-radius: 7px;
+  width: 10%;
+}
