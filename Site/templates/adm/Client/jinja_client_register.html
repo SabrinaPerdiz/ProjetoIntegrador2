@@ -26,7 +26,7 @@
             </div>
             <div class="input-group">
                 <label>CPF/CNPJ:</label>
-                <input type="text" name="cpf_cnpj" class="form-control ml-2" required="required" placeholder="CPF/CNPJ"
+                <input type="text" name="cpf_cnpj" class="form-control ml-2" placeholder="CPF/CNPJ"
                     aria-describedby="basic-addon1" value="{{ cliente.cpf_cnpj| default('') }}"/>
             </div>
             <div class="input-group">
@@ -44,7 +44,7 @@
                 <h2 class="card-title text-center">{{ strings.address_title }}</h2>
                     <div class="input-group">
                         <label>CEP:</label>
-                        <input type="text" name="cep" class="form-control ml-2" required="required" placeholder="CEP"
+                        <input type="text" name="cep" class="form-control ml-2"  placeholder="CEP"
                             aria-describedby="basic-addon1" onfocusout="buscaCEP(this.value);" value="{{ cliente.cep| default('') }}"/>
                     </div>
                     <div class="input-group">
