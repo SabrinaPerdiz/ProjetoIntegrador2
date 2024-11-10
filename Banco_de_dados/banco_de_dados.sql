@@ -45,5 +45,5 @@ CREATE TABLE Agendamentos (
     descricao_servico TEXT,
     status ENUM('pendente', 'confirmado', 'realizado', 'cancelado'),
     observacoes TEXT,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
 );
