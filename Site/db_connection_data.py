@@ -1,4 +1,4 @@
-host = 'sql.freedb.tech'
-db_user = 'freedb_sql10742457'
-db_password = '*C6#axUD4BVmGaW'
-db_database = 'freedb_sql10742457'
+host = 'cm-3h.h.filess.io'
+db_user = 'basepi_threadhand'
+db_password = '11c2e7234c36891312facaccb79b641aaeec0a09'
+db_database = 'basepi_threadhand'
