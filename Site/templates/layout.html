@@ -53,6 +53,56 @@
     
     {% block body %}
     {% endblock %}
-    
+
+    <div id="acessibility" class="acessibilidade">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a>Tamanho da fonte</a>
+        <a class="fa-solid fa-plus" onclick="alteraFonte('aumentar')"></a>
+        <a class="fa-solid fa-minus" onclick="alteraFonte('diminuir')"></a>
+        <br>
+        <a>Alto Contraste</a>
+        <button class="dark-mode-toggle" id="dark-mode-toggle"><i class="fa-solid fa-circle-half-stroke"></i></button>
+        <br>
+        <a>Libras</a>
+        <div vw class="enabled">
+          <div vw-access-button class="active"></div>
+          <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+          </div>
+        </div>
+      </div>
+
+    <span id="logo_acessibilidade" onclick="openNav()" class="fa-solid fa-hands"></span>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        function openNav() {
+          document.getElementById("acessibility").style.display = "block";
+          document.getElementById("logo_acessibilidade").style.display = "none";
+          
+        }
+        
+        function closeNav() {
+          document.getElementById("acessibility").style.display = "none";
+          document.getElementById("logo_acessibilidade").style.display = "block";
+        }
+
+        function alteraFonte(action) {
+            const elements = ['body','div', 'p','h1','h2','h3','h4','input','form','a','section'];
+            elements.map(element=>{                
+                const selector = document.querySelectorAll(element);
+                selector.forEach((element) => {
+                    let value = getComputedStyle(element).getPropertyValue('font-size');
+                    value = value.replace('px', '');
+                    value = action === 'aumentar' ? parseInt(value) + 1 : parseInt(value) - 1;
+                    element.style.fontSize =  `${value}px`;
+                }
+            )
+            })
+        }
+        
+        //Libras
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+        </script>
 </body>
 </html> 

@@ -1,4 +1,4 @@
-host = 'sql10.freesqldatabase.com'
-db_user = 'sql10742457'
-db_password = '27CIDCk7zG'
-db_database = 'sql10742457'
+host = 'sql.freedb.tech'
+db_user = 'freedb_sql10742457'
+db_password = '*C6#axUD4BVmGaW'
+db_database = 'freedb_sql10742457'
