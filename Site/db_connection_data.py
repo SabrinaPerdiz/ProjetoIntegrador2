@@ -1,4 +1,9 @@
-host = 'cm-3h.h.filess.io'
-db_user = 'basepi_threadhand'
-db_password = '11c2e7234c36891312facaccb79b641aaeec0a09'
-db_database = 'basepi_threadhand'
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+host = os.getenv('HOST')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+db_database = os.getenv('DB_DATABASE')
