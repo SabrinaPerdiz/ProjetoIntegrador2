@@ -13,7 +13,7 @@ Site para salão de beleza contemplando as seguintes funcionalidades:
 
 ## Alunos participantes
 
-Diana Alves, RA: 2207712<br>
+
 Elder Fernandes de Oliveira, RA: 2221701<br>
 Isaac Souza dos Anjos, RA: 2229397<br>
 Jéssica Caroline Oliveira de Jesus, RA: 2213596<br>
