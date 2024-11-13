@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS Agendamentos;
 DROP TABLE IF EXISTS clientes;
 DROP TABLE IF EXISTS Procedimentos;
+DROP TABLE IF EXISTS usuarios;
 
 -- Tabela Clientes
 CREATE TABLE clientes (
@@ -37,7 +38,7 @@ CREATE TABLE Procedimentos (
 );
 
 -- Tabela Agendamentos
-CREATE TABLE Agendamentos (
+CREATE TABLE agendamentos (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT,
     datahora_agendamento DATETIME,

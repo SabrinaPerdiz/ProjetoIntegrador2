@@ -28,6 +28,7 @@ def get_users():
     cursor.execute('select id_usuario from usuarios')
     usuarios = cursor.fetchall()
     cursor.close()
+    close_db()
     return usuarios
 
 #Retorna o ID e a senha a partir do nome do usuário
@@ -38,6 +39,7 @@ def get_password_user(user_name):
     cursor.execute('select id_usuario,senha from usuarios where usuario ="'+user_name+'"')
     rt = cursor.fetchone()    
     cursor.close()
+    close_db()
     return rt
 
 #Retorna o ID e a senha a partir do ID
@@ -47,7 +49,8 @@ def get_password_id(id):
     print('select id_usuario,senha from usuarios where id_usuario ='+id)
     cursor.execute('select id_usuario,senha from usuarios where id_usuario ='+id)
     rt = cursor.fetchone()    
-    cursor.close()
+    cursor.close()    
+    close_db()
     return rt
 
 class cliente():
@@ -59,6 +62,7 @@ class cliente():
         clientes = cursor.fetchall()    
         print(clientes)
         cursor.close()
+        close_db()
         return clientes
     
     #Insere um cliente novo na tabela
@@ -68,6 +72,7 @@ class cliente():
         cursor.execute('insert clientes set nome = %s, telefone = %s, data_nascimento = %s, cpf_cnpj = %s, endereco = %s, cep = %s, rua = %s, numero_casa = %s, bairro = %s, cidade = %s, estado = %s, referencia_end = %s', (nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia))
         db.commit()  
         cursor.close()
+        close_db()
         return 1
     
     def update_cliente(cliente_id, nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia):
@@ -78,8 +83,10 @@ class cliente():
         affected_rows = cursor.rowcount
         if affected_rows is not None and affected_rows > 0:
             cursor.close()
+            close_db()
             return True
-        else:
+        else:            
+            close_db()
             return False
 
     def delete_cliente(cliente_id):
@@ -92,7 +99,8 @@ class cliente():
             db.rollback()
             raise e 
         finally:
-            cursor.close()
+            cursor.close()            
+            close_db()
 
     def get_cliente(cliente_id):
         db = getdb()
@@ -101,6 +109,7 @@ class cliente():
         cliente = cursor.fetchone()    
         print(cliente)
         cursor.close()
+        close_db()
         return cliente
 
 class servico():
@@ -112,6 +121,7 @@ class servico():
         procedimentos = cursor.fetchall()    
         print(procedimentos)
         cursor.close()
+        close_db()
         return procedimentos
     
     def insert_servico(nome,descricao):
@@ -120,6 +130,7 @@ class servico():
         cursor.execute('insert Procedimentos set nome = %s, descricao = %s', (nome, descricao))
         db.commit()  
         cursor.close()
+        close_db()
         return 1
     
     def update_servico(id_procedimento,nome,descricao):
@@ -128,9 +139,9 @@ class servico():
         cursor.execute('update Procedimentos set nome = %s, descricao = %s WHERE id_procedimento = %s', (nome, descricao, id_procedimento))
         db.commit()
         cursor.close()
+        close_db()
         affected_rows = cursor.rowcount
         if affected_rows is not None and affected_rows > 0:
-            cursor.close()
             return True
         else:
             return False,
@@ -146,6 +157,7 @@ class servico():
             raise e 
         finally:
             cursor.close()
+            close_db()
 
     def get_servico(work_id):
         db = getdb()
@@ -154,6 +166,7 @@ class servico():
         work = cursor.fetchone()    
         print(work)
         cursor.close()
+        close_db()
         return work
     
 class agendamento():
@@ -165,6 +178,7 @@ class agendamento():
         agendamentos = cursor.fetchall()    
         print(agendamentos)
         cursor.close()
+        close_db()
         return agendamentos
     
     def insert_agendamento(id_cliente, id_procedimento, datahora_agendamento, datahora_realizacao, status, descricao_servico, observacoes):
@@ -173,6 +187,7 @@ class agendamento():
         cursor.execute('insert agendamentos set id_cliente = %s, id_procedimento = %s, datahora_agendamento = %s, datahora_realizacao = %s, status = %s, descricao_servico = %s, observacoes = %s ', (id_cliente, id_procedimento, datahora_agendamento, datahora_realizacao, status, descricao_servico, observacoes))
         db.commit()
         cursor.close()
+        close_db()
         return 1
     
     def update_agendamento(id_agendamento, id_cliente, id_procedimento, datahora_agendamento, datahora_realizacao, status, descricao_servico, observacoes):
@@ -181,9 +196,9 @@ class agendamento():
         cursor.execute('update agendamentos set id_cliente = %s, id_procedimento = %s, datahora_agendamento = %s,datahora_realizacao = %s, status = %s, descricao_servico = %s, observacoes = %s WHERE id_agendamento = %s', (id_cliente,id_procedimento,datahora_agendamento,datahora_realizacao,status,descricao_servico,observacoes, id_agendamento))
         db.commit()
         cursor.close()
+        close_db()
         affected_rows = cursor.rowcount
         if affected_rows is not None and affected_rows > 0:
-            cursor.close()
             return True
         else:
             return False
@@ -199,6 +214,7 @@ class agendamento():
             raise e 
         finally:
             cursor.close()
+            close_db()
 
     def get_agendamento(schedule_id):
         db = getdb()
@@ -207,4 +223,5 @@ class agendamento():
         schedule = cursor.fetchone()    
         print(schedule)
         cursor.close()
+        close_db()
         return schedule
