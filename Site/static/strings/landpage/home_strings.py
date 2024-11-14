@@ -3,7 +3,6 @@ STRINGS = {
     "home": "Home",
     "adm": "ADM",
     "contact": "Contato",
-    "description": "Atuando 20 anos neste mercado, com muita eficiência, dedicação, entregando sempre o melhor trabalho com o menor preço possível. Não apenas restaurando mas sim trazendo como feito de fábrica. Venha fazer seu orçamento e seja feliz assim como todos os meus outros clientes",
     "description_title": "Oficina do Móvel",
     "start_contact": "Entre em contato",
     "name_form": "Nome",
