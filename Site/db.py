@@ -78,7 +78,7 @@ class cliente():
     def update_cliente(cliente_id, nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia):
         db = getdb()
         cursor = db.cursor(dictionary=True)
-        cursor.execute('update clientes set nome = %s, telefone = %s, data_nascimento = %s, cpf_cnpj = %s, endereco = %s, cep = %s, rua = %s, numero_casa = %s, bairro = %s, cidade = %s, estado = %s, referencia_end = %s', (nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia))
+        cursor.execute('update clientes set nome = %s, telefone = %s, data_nascimento = %s, cpf_cnpj = %s, endereco = %s, cep = %s, rua = %s, numero_casa = %s, bairro = %s, cidade = %s, estado = %s, referencia_end = %s where id_cliente = %s', (nome, telefone, data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia,cliente_id))
         db.commit()  
         affected_rows = cursor.rowcount
         if affected_rows is not None and affected_rows > 0:

@@ -12,30 +12,6 @@
     <h1>{{ strings.table_title }}</h1>
 
     <div class="table-wrapper">
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="d-flex justify-content-center align-items-center mb-3" style="width: 100%;">
-                <div class="input-group me-2" style="flex: 1;">
-                    <input type="text" class="form-control" id="filterInput" 
-                           placeholder="{{ strings.filter_placeholder }}" 
-                           onkeyup="filterDateTable(); toggleClearButton();">
-                    <button class="btn" id="clearButton" style="cursor: pointer; display: none;" onclick="clearFilter()">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-                
-                <div class="input-group" style="flex: 1;">
-                    <input type="date" name="datahora_agendamento" class="form-control ml-2" 
-                           id="dataInput"
-                           placeholder="Data" 
-                           aria-describedby="basic-addon1" 
-                           onclick="this.showPicker();" 
-                           onchange="filterDateTable()" />
-                    <button class="btn" id="clearButtonDate" style="cursor: pointer; display: none;" onclick="clearDate()">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
                 
         <table id="clientsTable" class="table table-bordered">
             <thead class="thead-dark bg-style-2 text-center align-middle">
