@@ -107,9 +107,9 @@ class cliente():
         cursor = db.cursor(dictionary=True)
         cursor.execute('select * from clientes where id_cliente = %s', (cliente_id,))
         cliente = cursor.fetchone()    
-        print(cliente)
         cursor.close()
         close_db()
+        print(cliente)
         return cliente
 
 class servico():

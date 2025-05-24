@@ -5,7 +5,7 @@ from datetime import datetime
 import importlib
 import os
 import db
-
+import requests
 
 app = Flask(__name__)
 app.secret_key = 'chave'
@@ -93,12 +93,34 @@ def dashboard():
     strings = load_strings('adm','dashboard')
     return render_template("/adm/jinja_dashboard.html",nav_strings=strings, strings=strings)
 
+# API dados de clientes
+@app.route('/api/clientes',methods =['GET'])
+def api_clientes():
+    if request.method == 'GET':
+        dados = db.cliente.get_clientes()
+        return jsonify(dados)
+    
+# API cliente individual
+@app.route('/api/cliente',methods =['POST'])
+def api_cliente():
+    if request.method == 'POST':
+        print(request.json)
+        dados = db.cliente.get_cliente(request.json['id_cliente'])
+        return jsonify(dados)
+
 #Tela Clientes Cadastrados
-@app.route("/clientes")
+@app.route("/clientes", methods=['GET', 'DELETE', 'POST'])
 @login_required
 def clientes_cadastrados():
     strings = load_strings('adm','clients')
-    return render_template("/adm/Client/jinja_clients_list.html",clientes=db.cliente.get_clientes(), strings=strings, nav_strings=nav_strings)
+    clientes = {'clientes': []}
+    response = requests.get(url_for('api_clientes', _external = True))
+    if response.status_code == 200:
+        clientes['clientes'] = response.json()
+        print(clientes)
+    else:
+        print(response.status_code)
+    return render_template("/adm/Client/jinja_clients_list.html",clientes=clientes, strings=strings, nav_strings=nav_strings)
 
 #Tela Cadastro de Clientes
 @app.route("/clientes/cadastro", methods=['GET','POST'])
@@ -117,10 +139,14 @@ def cadastro_cliente():
         cidade = request.form['cidade']
         estado = request.form['estado']
         referencia = request.form['referencia'] if request.form['referencia'] != '' else None
-        endereco = "${rua},${numero},${bairro},${cidade},${estado}"
+        endereco = request.form['rua'] +',' + request.form['numero'] + ',' + request.form['bairro'] + ',' + request.form['cidade'] + ',' + request.form['estado']
         retorno = db.cliente.insert_cliente(nome, telefone ,data_nascimento, cpf_cnpj, endereco, cep, rua, numero, bairro, cidade, estado, referencia)
         if retorno != None:
             flash( status['success_register_user'], 'success')
+            return redirect(url_for('clientes_cadastrados'))
+        else:
+            flash( status['success_register_user'], 'danger')
+            print(retorno)
             return redirect(url_for('clientes_cadastrados'))
     return render_template("/adm/Client/jinja_client_register.html", nav_strings=nav_strings, strings=strings, cliente=None)
 
@@ -131,14 +157,22 @@ def delete_cliente(cliente_id):
     strings = load_strings('adm','register_client')
     if request.method == 'DELETE':
         retorno = db.cliente.delete_cliente(cliente_id)
-        if retorno != None:            
+        if retorno == None:            
             flash(status['success_delete_user'], 'success')
-            return redirect(url_for('clientes_cadastrados'))
+            return jsonify({"success": True}), 200
         else:
             flash(status['error_delete_user'], 'danger')
-            return redirect(url_for('clientes_cadastrados'))
+            return jsonify({"success": False}), 200
     if request.method == 'GET':
-         return render_template("/adm/Client/jinja_client_register.html", nav_strings=nav_strings, strings=strings,cliente=db.cliente.get_cliente(cliente_id))
+        cliente = {}
+        jsonpost = {'id_cliente' : cliente_id}
+        response = requests.post(url_for('api_cliente', _external = True),json =  jsonpost)
+        if response.status_code == 200:
+            cliente = response.json()
+            print(cliente)
+        else:
+            print(response.status_code)
+        return render_template("/adm/Client/jinja_client_register.html", nav_strings=nav_strings, strings=strings,cliente=cliente)
     if request.method == 'POST':
         nome = request.form['nome']
         cpf_cnpj = request.form['cpf_cnpj']
@@ -159,13 +193,28 @@ def delete_cliente(cliente_id):
         else:
             flash( status['error_edit_user'], 'success')
 
+# API dados de serviço
+@app.route('/api/serviços',methods =['GET'])
+def api_servicos():
+    dados = db.servico.get_servicos()
+    return jsonify(dados)
+
+# API individual de serviço
+@app.route('/api/serviço',methods =['POST'])
+def api_servico():
+    dados = db.servico.get_servico(request.json['id_servico'])
+    return jsonify(dados)
 
 #Tela Serviços Cadastrados
 @app.route("/serviços")
 @login_required
 def servicos_cadastrados():
     strings = load_strings('adm','works')
-    return render_template("/adm/Work/jinja_works_list.html",works=db.servico.get_servicos(), strings=strings, nav_strings=nav_strings)
+    servicos = {}
+    response = requests.get(url_for('api_servicos', _external = True))
+    servicos = response.json()
+    print(servicos)
+    return render_template("/adm/Work/jinja_works_list.html",works=servicos, strings=strings, nav_strings=nav_strings)
 
 #Tela Cadastro de Serviços
 @app.route("/serviços/cadastro", methods=['GET','POST'])
@@ -196,7 +245,15 @@ def delete_service(service_id):
             flash(status['error_delete_work'], 'danger')
             return jsonify({"error": str(e)}), 400
     if request.method == 'GET':
-         return render_template("/adm/Work/jinja_work_register.html", nav_strings=nav_strings, strings=strings,work=db.servico.get_servico(service_id))
+        jsonpost = {'id_servico' : service_id}
+        servico = {}
+        response = requests.post(url_for('api_servico', _external = True),json =  jsonpost)
+        if response.status_code == 200:
+            servico = response.json()
+            print(servico)
+        else:
+            print(response.status_code)
+        return render_template("/adm/Work/jinja_work_register.html", nav_strings=nav_strings, strings=strings,work=servico)
     if request.method == 'POST':
         # Informações do serviço
         nome = request.form['nome']
@@ -208,15 +265,27 @@ def delete_service(service_id):
         else:
             flash( status['error_edit_work'], 'success')
 
+# API dados de agendamentos
+@app.route('/api/agendamentos',methods =['GET'])
+def api_agendamentos():
+    dados = db.agendamento.get_agendamentos()
+    return jsonify(dados)
+
+
+@app.route('/api/agendamento',methods =['POST'])
+def api_agendamento():
+    dados = db.agendamento.get_agendamento(request.json['id_agendamento'])
+    return jsonify(dados)
+
 #Tela Agendamentos Cadastrados
 @app.route("/agendamentos")
 @login_required
 def agendamentos_cadastrados():
     strings = load_strings('adm','schedulings')
-    schedulings = db.agendamento.get_agendamentos()
+    schedulings = requests.get(url_for('api_agendamentos', _external = True))
 
-    clientes = db.cliente.get_clientes() 
-    servicos = db.servico.get_servicos()
+    clientes = requests.get(url_for('api_clientes', _external = True))
+    servicos = requests.get(url_for('api_servicos', _external = True))
 
     clientes_dict = {cliente['id_cliente']: cliente['nome'] for cliente in clientes}
     servicos_dict = {servico['id_procedimento']: servico['nome'] for servico in servicos}
@@ -228,6 +297,7 @@ def agendamentos_cadastrados():
    
     return render_template("/adm/Schedule/jinja_schedules_list.html",schedulings=schedulings, strings=strings, nav_strings=nav_strings)
 
+
 #Tela Cadastro de Agendamentos
 @app.route("/agendamentos/cadastro", methods=['GET','POST'])
 @login_required
@@ -235,8 +305,10 @@ def cadastro_agendamento():
     strings = load_strings('adm','register_schedule')
     if request.method == 'GET':
         schedule = {'servicos': [], 'clientes': []}
-        schedule['servicos'] = db.servico.get_servicos()
-        schedule['clientes'] = db.cliente.get_clientes()
+        response_servicos = requests.get(url_for('api_servicos', _external = True))
+        response_clientes = requests.get(url_for('api_clientes', _external = True))
+        schedule['servicos'] = response_servicos.json()
+        schedule['clientes'] = response_clientes.json()
         schedule['servico'] = ''
         schedule['cliente'] = ''
         schedule['status_list'] = ['Pendente', 'Confirmado', 'Realizado', 'Cancelado']
@@ -261,17 +333,21 @@ def cadastro_agendamento():
 def delete_schedule(schedule_id):
     strings = load_strings('adm','register_schedule')
     if request.method == 'DELETE':
-        retorno = db.agendamento.delete_agendamento(schedule_id)
-        if retorno != None:
+        try:
+            retorno = db.agendamento.delete_agendamento(schedule_id)
             flash(status['success_delete_schedule'], 'success')
-            return redirect(url_for('agendamentos_cadastrados'))
-        else:
+            return jsonify({"success": True}), 200
+        except Exception as e:
             flash(status['error_delete_schedule'], 'danger')
-            return redirect(url_for('agendamentos_cadastrados'))
-    if request.method == 'GET':
-        schedule = db.agendamento.get_agendamento(schedule_id)
-        schedule['servicos'] = schedule.get('servicos', db.servico.get_servicos())
-        schedule['clientes'] = schedule.get('clientes', db.cliente.get_clientes())
+            return jsonify({"error": str(e)}), 400
+    if request.method == 'GET':        
+        agendamento = {}
+        jsonpost = {'id_agendamento' : schedule_id}
+        schedule = requests.post(url_for('api_agendamento', _external = True),json =  jsonpost) 
+        response_servicos = requests.get(url_for('api_servicos', _external = True))
+        response_clientes = requests.get(url_for('api_clientes', _external = True))
+        schedule['servicos'] = response_servicos.json()
+        schedule['clientes'] = response_clientes.json()
         schedule['status_list'] = ['Pendente', 'Confirmado', 'Realizado', 'Cancelado']
         schedule['servico'] = [servico for servico in schedule['servicos'] if servico['id_procedimento'] == schedule['id_procedimento']][0]
         schedule['cliente'] = [cliente for cliente in schedule['clientes'] if cliente['id_cliente'] == schedule['id_cliente']][0]
@@ -292,6 +368,8 @@ def delete_schedule(schedule_id):
         else:
             flash( status['error_edit_schedule'], 'success')
             return redirect(url_for('agendamentos_cadastrados'))
+
+
 
 # Rota de logout
 @app.route('/logout')
