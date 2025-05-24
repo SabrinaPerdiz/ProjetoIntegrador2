@@ -2,7 +2,6 @@
 DROP TABLE IF EXISTS Agendamentos;
 DROP TABLE IF EXISTS clientes;
 DROP TABLE IF EXISTS Procedimentos;
-DROP TABLE IF EXISTS usuarios;
 
 -- Tabela Clientes
 CREATE TABLE clientes (
@@ -38,15 +37,13 @@ CREATE TABLE Procedimentos (
 );
 
 -- Tabela Agendamentos
-CREATE TABLE agendamentos (
+CREATE TABLE Agendamentos (
     id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT,
-    id_procedimento INT,
     datahora_agendamento DATETIME,
     datahora_realizacao DATETIME,
     descricao_servico TEXT,
     status ENUM('pendente', 'confirmado', 'realizado', 'cancelado'),
     observacoes TEXT,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente),
-    FOREIGN KEY (id_procedimento) REFERENCES Procedimentos(id_procedimento)
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
 );
